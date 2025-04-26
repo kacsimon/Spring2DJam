@@ -5,6 +5,6 @@ using UnityEngine.Tilemaps;
 public class TileData : ScriptableObject
 {
     public TileBase[] tiles;
-    public bool canWither;
+    public bool canWither, canPlant;
     public float spreadChance, spreadInterval, witheringTime;
 }

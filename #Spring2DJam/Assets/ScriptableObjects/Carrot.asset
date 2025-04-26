@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d2d41a5a44aa4e4bbcd629f4f8676ea, type: 3}
+  m_Name: Carrot
+  m_EditorClassIdentifier: 
+  seedlingPrefab: {fileID: 11400000, guid: d0ab4097c4f806f4f82d7308e20af3fa, type: 2}
+  plantPrefab: {fileID: 11400000, guid: 801dcd90b89ceb04a96c7bc87476991e, type: 2}
+  carrotPrefab: {fileID: 11400000, guid: 537596246361b034fa85ec75bf50065e, type: 2}
+  state: 0

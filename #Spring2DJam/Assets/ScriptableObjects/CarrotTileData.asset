@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 88204b782fe5cb54ba1c78f9d38b600a, type: 3}
-  m_Name: FieldTileData
+  m_Name: CarrotTileData
   m_EditorClassIdentifier: 
   tiles:
-  - {fileID: 11400000, guid: 4e89d087834af4f44ab0e334d46cad14, type: 2}
+  - {fileID: 11400000, guid: 801dcd90b89ceb04a96c7bc87476991e, type: 2}
+  - {fileID: 11400000, guid: d0ab4097c4f806f4f82d7308e20af3fa, type: 2}
+  - {fileID: 11400000, guid: 537596246361b034fa85ec75bf50065e, type: 2}
+  - {fileID: 11400000, guid: 8480a43e36e57d54591c4ea9b8f8e113, type: 2}
   canWither: 1
-  canPlant: 1
-  spreadChance: 30
+  canPlant: 0
+  spreadChance: 60
   spreadInterval: 2
   witheringTime: 3
