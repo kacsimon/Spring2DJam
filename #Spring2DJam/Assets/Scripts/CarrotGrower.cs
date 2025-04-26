@@ -61,7 +61,6 @@ public class CarrotGrower : MonoBehaviour
                     if (!isGrown)
                     {
                         GameManager.Instance.carrotPositions.Add(position);
-                        Debug.Log(position + "added");
                         isGrown = true;
                     }
                     else

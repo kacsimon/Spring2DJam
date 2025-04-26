@@ -2973,7 +2973,7 @@ GameObject:
   - component: {fileID: 1433470124}
   - component: {fileID: 1433470125}
   m_Layer: 0
-  m_Name: BunnySpawner
+  m_Name: RabbitSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -2987,13 +2987,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1433470123}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 13, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 154845567}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &1433470125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3006,7 +3006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5685c0ca98312543a256678bb721175, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bunnyPrefab: {fileID: 5918131405068850047, guid: a327582a4ef36874583d8ab2a64b8e34, type: 3}
+  bunnyPrefab: {fileID: 4244319106791807087, guid: 87ccac164b1d2c842b65dd7a0d45ee88, type: 3}
   spawnTimer: 5
 --- !u!1 &1720149622
 GameObject:

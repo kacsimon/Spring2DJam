@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BunnySpawner : MonoBehaviour
+public class RabbitSpawner : MonoBehaviour
 {
     [SerializeField] Transform bunnyPrefab;
     [SerializeField] float spawnTimer = 5f;
