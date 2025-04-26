@@ -15,4 +15,5 @@ MonoBehaviour:
   seedlingPrefab: {fileID: 11400000, guid: d0ab4097c4f806f4f82d7308e20af3fa, type: 2}
   plantPrefab: {fileID: 11400000, guid: 801dcd90b89ceb04a96c7bc87476991e, type: 2}
   carrotPrefab: {fileID: 11400000, guid: 537596246361b034fa85ec75bf50065e, type: 2}
-  state: 0
+  ogPlantPrefab: {fileID: 11400000, guid: c1751e14b74912a47b610768c4a20c07, type: 2}
+  ogCarrotPrefab: {fileID: 11400000, guid: 8480a43e36e57d54591c4ea9b8f8e113, type: 2}

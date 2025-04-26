@@ -1,10 +1,8 @@
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class CarrotPlanter : MonoBehaviour
 {
     [SerializeField] CarrotGrower carrotGrower;
-    //[SerializeField] Tilemap tilemap;
     void Update()
     {
         if (Input.GetMouseButtonDown(0))

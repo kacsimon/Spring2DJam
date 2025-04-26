@@ -5,14 +5,13 @@ using System.Collections.Generic;
 
 public class MapManager : SingletonBase<MapManager>
 {
-    //[SerializeField] Tilemap farmTilemap;
-    //[SerializeField] Tilemap vegetationTilemap;
     [SerializeField] List<TileData> tileDataList;
 
     Dictionary<TileBase, TileData> dataFromTilesDictionary;
 
-    void Start()
+    protected override void Awake()
     {
+        base.Awake();
         dataFromTilesDictionary = new Dictionary<TileBase, TileData>();
         foreach (var tileData in tileDataList)
         {
@@ -22,13 +21,6 @@ public class MapManager : SingletonBase<MapManager>
             }
         }
     }
-    //public TileData GetTileDataFromFarm(Vector3Int tilePosition)
-    //{
-    //    TileBase tile = farmTilemap.GetTile(tilePosition);
-
-    //    if (tile == null) return null;
-    //    else return dataFromTilesDictionary[tile];
-    //}
     public TileData GetTileDataFromMap(Tilemap tilemap, Vector3Int tilePosition)
     {
         TileBase tile = tilemap.GetTile(tilePosition);

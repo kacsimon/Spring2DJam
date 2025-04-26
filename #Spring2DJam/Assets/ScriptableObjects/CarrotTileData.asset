@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: CarrotTileData
   m_EditorClassIdentifier: 
   tiles:
-  - {fileID: 11400000, guid: 801dcd90b89ceb04a96c7bc87476991e, type: 2}
   - {fileID: 11400000, guid: d0ab4097c4f806f4f82d7308e20af3fa, type: 2}
+  - {fileID: 11400000, guid: 801dcd90b89ceb04a96c7bc87476991e, type: 2}
   - {fileID: 11400000, guid: 537596246361b034fa85ec75bf50065e, type: 2}
+  - {fileID: 11400000, guid: c1751e14b74912a47b610768c4a20c07, type: 2}
   - {fileID: 11400000, guid: 8480a43e36e57d54591c4ea9b8f8e113, type: 2}
   canWither: 1
   canPlant: 0
-  spreadChance: 60
+  spreadChance: 20
   spreadInterval: 2
   witheringTime: 3

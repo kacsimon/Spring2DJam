@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88204b782fe5cb54ba1c78f9d38b600a, type: 3}
   m_Name: GrassTileData
   m_EditorClassIdentifier: 
-  tiles: []
-  canWither: 0
+  tiles:
+  - {fileID: 11400000, guid: ab86be4d87b8edb4eba06647124e954d, type: 2}
+  - {fileID: 11400000, guid: d6fce3905c0cf1346b40c13e9bdb7eb9, type: 2}
+  - {fileID: 11400000, guid: cc3a8b3e323f09340835dcd9ebb0c009, type: 2}
+  - {fileID: 11400000, guid: 82cf974df0c90b84ca6d2cc491ea0cba, type: 2}
+  canWither: 1
   canPlant: 0
-  spreadChance: 0
-  spreadInterval: 0
-  witheringTime: 0
+  spreadChance: 50
+  spreadInterval: 4.8
+  witheringTime: 5

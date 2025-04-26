@@ -10,7 +10,7 @@ namespace BaseUtilities
             get { return instance; }
         }
 
-        void Awake()
+        protected virtual void Awake()
         {
             if (instance == null)
             {

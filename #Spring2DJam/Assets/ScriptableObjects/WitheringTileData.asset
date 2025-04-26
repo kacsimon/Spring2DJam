@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: WitheringTileData
   m_EditorClassIdentifier: 
   tiles:
-  - {fileID: 11400000, guid: 4b4c581d19168e547b9ec1e8c438c1ea, type: 2}
+  - {fileID: 11400000, guid: 3894b55c64d946b408977c393cc9cebe, type: 2}
+  - {fileID: 11400000, guid: 2baa3918ccac205459a38ae8dca2f06d, type: 2}
   canWither: 0
-  spreadChance: 20
-  spreadInterval: 2
-  witheringTime: 3
+  canPlant: 0
+  spreadChance: 0
+  spreadInterval: 0
+  witheringTime: 0

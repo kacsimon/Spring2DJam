@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tiles:
   - {fileID: 11400000, guid: 4e89d087834af4f44ab0e334d46cad14, type: 2}
+  - {fileID: 11400000, guid: 1b3d8c9bdf07b6746825d68d1205923b, type: 2}
   canWither: 1
   canPlant: 1
   spreadChance: 30
-  spreadInterval: 2
-  witheringTime: 3
+  spreadInterval: 4
+  witheringTime: 6
