@@ -39,11 +39,11 @@ public class Rabbit : MonoBehaviour
             case State.Overgrown:
                 Vector3Int currentPosition = new Vector3Int((int)transform.position.x, (int)transform.position.y);
                 if (isDragging) return;
-                if (eatedWither == maxEatedWither) 
+                if (eatedWither == maxEatedWither)
                 {
                     state = State.Fed;
                     eatedWither = 0;
-                    return; 
+                    return;
                 }
                 CheckForWithering(currentPosition);
                 break;
@@ -60,29 +60,48 @@ public class Rabbit : MonoBehaviour
     }
     void CheckForWithering(Vector3Int currentPosition)
     {
-        for (int x = currentPosition.x - 1; x < currentPosition.x + 2; x++)
+        if (isDragging) return;
+
+        for (int x = currentPosition.x - 1; x <= currentPosition.x + 1; x++)
         {
-            for (int y = currentPosition.y - 1; y < currentPosition.y + 2; y++)
+            for (int y = currentPosition.y - 1; y <= currentPosition.y + 1; y++)
             {
-                Vector3Int witherPosition = new Vector3Int(x, y);
-                Debug.Log(witherPosition);
-                if (GameManager.Instance.witheringPosition.Contains(witherPosition))
+                Vector3Int checkPos = new Vector3Int(x, y, 0);
+
+                if (GameManager.Instance.witheringPosition.Contains(checkPos))
                 {
-                    OnIsMove?.Invoke(this, true);
-                    transform.position = Vector3.MoveTowards(transform.position, witherPosition, velocity * Time.deltaTime);
-                    eatedWither++;
-                    //Cure withering
-                    GameManager.Instance.vegetationTilemap.SetTile(currentPosition, null);
-                    GameManager.Instance.witheringPosition.Remove(currentPosition);
-                    //Field infected
-                    TileBase farmTile = GameManager.Instance.farmTilemap.GetTile(currentPosition);
-                    TileBase toBeTile = farmTile;
-                    if (UnityEngine.Random.Range(0, 100) >= 50) toBeTile = MapManager.Instance.GetChangedFarmTile(farmTile);
-                    GameManager.Instance.farmTilemap.SetTile(currentPosition, toBeTile);
+                    // Move toward it and eat when close enough
+                    transform.position = Vector3.MoveTowards(transform.position, (Vector3)checkPos, velocity * Time.deltaTime);
+
+                    if (Vector3.Distance(transform.position, checkPos) < 0.1f)
+                    {
+                        // Eat it
+                        GameManager.Instance.witheringPosition.Remove(checkPos);
+                        GameManager.Instance.vegetationTilemap.SetTile(checkPos, null);
+                        eatedWither++;
+
+                        // Optional: replace farm tile here too
+                        TileBase farmTile = GameManager.Instance.farmTilemap.GetTile(checkPos);
+                        if (UnityEngine.Random.Range(0, 100) >= 50)
+                        {
+                            GameManager.Instance.farmTilemap.SetTile(checkPos, MapManager.Instance.GetChangedFarmTile(farmTile));
+                        }
+
+                        if (eatedWither >= maxEatedWither)
+                        {
+                            state = State.Fed;
+                            transform.localScale = Vector3.one;
+                            transform.localRotation = Quaternion.identity;
+                            return;
+                        }
+                    }
+
+                    return; // Eat only one per frame
                 }
             }
         }
     }
+
     void OnMouseDrag()
     {
         if (state != State.Overgrown) return;
