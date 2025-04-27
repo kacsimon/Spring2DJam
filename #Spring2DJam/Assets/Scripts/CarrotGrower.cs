@@ -33,6 +33,7 @@ public class CarrotGrower : MonoBehaviour
     }
     void GrowCarrot(Vector3Int position)
     {
+        if (GameManager.Instance.witheringPosition.Contains(position)) return;
         growTimer -= Time.deltaTime;
         if (growTimer > 0) return;
         switch (state)

@@ -49,6 +49,7 @@ MonoBehaviour:
   - {fileID: 6673002669808401662, guid: 87ccac164b1d2c842b65dd7a0d45ee88, type: 3}
   - {fileID: 414912623820343976, guid: 37e05ca279dae184d93a38ec28c64565, type: 3}
   - {fileID: 8843385801722557275, guid: 6df94202a5530124490b60a2162ba7c3, type: 3}
+  velocity: 3
 --- !u!61 &5996368735148381054
 BoxCollider2D:
   m_ObjectHideFlags: 0

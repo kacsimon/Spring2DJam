@@ -1,18 +1,23 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Rabbit : MonoBehaviour
 {
     [SerializeField] GameObject[] gfxPrefabArray;
-
-    float velocity = 3f;
+    //for test
+    [SerializeField] float velocity = 3f;
     Vector3Int targetCarrot = new Vector3Int(6, 2);
-    bool isHungry = true, isOG;
+    bool isHungry = true, isOG, isDragging;
     GameObject gfx;
+    float eatDelay = 1.5f;
+    int eatedCarrot = 0, maxEatedCarrot = 3;
+
     public enum State
     {
         Casual,
         Angry,
         Overgrown,
+        Fed
     }
     State state;
     void Start()
@@ -32,15 +37,29 @@ public class Rabbit : MonoBehaviour
                 Move();
                 break;
             case State.Overgrown:
-                Vector3Int currentPosition = new Vector3Int((int)transform.position.x, (int)transform.position.y);
-                if (GameManager.Instance.hasWithering.Contains(currentPosition))
+                if (isDragging) return;
+                if (eatedCarrot == maxEatedCarrot) state = State.Fed;
+                    Vector3Int currentPosition = new Vector3Int((int)transform.position.x, (int)transform.position.y);
+                if (GameManager.Instance.witheringPosition.Contains(currentPosition))
                 {
                     Debug.Log("OG Rabbit ate withering in " + currentPosition);
+                    eatedCarrot++;
                     //Cure withering
                     GameManager.Instance.vegetationTilemap.SetTile(currentPosition, null);
-                    GameManager.Instance.hasWithering.Remove(currentPosition);
+                    GameManager.Instance.witheringPosition.Remove(currentPosition);
                     //Field infected
+                    TileData tileData = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.farmTilemap, currentPosition);
+                    TileBase farmTile = GameManager.Instance.farmTilemap.GetTile(currentPosition);
+                    Debug.Log(farmTile);
                 }
+                break;
+            case State.Fed:
+                transform.localScale = Vector3.one;
+                transform.localRotation = new Quaternion(0f, 0f, 0f, 0f);
+                StateChange(0);
+                Vector3 destination = new Vector3(6.3f, 2f, 0f);
+                transform.position = Vector3.MoveTowards(transform.position, destination, velocity * Time.deltaTime);
+                if (transform.position == destination) Destroy(gameObject);
                 break;
         }
     }
@@ -48,11 +67,16 @@ public class Rabbit : MonoBehaviour
     void OnMouseDrag()
     {
         if (state != State.Overgrown) return;
+        isDragging = true;
         transform.position = (Vector3)GetMouseWorldPosition();
+    }
+    void OnMouseExit()
+    {
+        isDragging = false;
     }
     void Move()
     {
-        if (GameManager.Instance.hasWithering.Contains(targetCarrot)) return;//SearchForCarrot();
+        if (GameManager.Instance.witheringPosition.Contains(targetCarrot)) SearchForCarrot();
         Vector3 targetPosition = GameManager.Instance.vegetationTilemap.GetCellCenterWorld(targetCarrot);
         if (isHungry) transform.position = Vector3.MoveTowards(transform.position, targetPosition, velocity * Time.deltaTime);
         else transform.position = Vector3.MoveTowards(transform.position, new Vector3(13f, 0f, 0f), velocity * Time.deltaTime);
@@ -62,13 +86,10 @@ public class Rabbit : MonoBehaviour
     }
     void SearchForCarrot()
     {
-        while (targetCarrot == new Vector3Int(6,2))
-        {
-            StateChange(0);
-            if (GetOGCarrotPosition()) return;
-            else if (GetCarrotPosition()) return;
-            else StateChange(1); 
-        }
+        StateChange(0);
+        if (GetOGCarrotPosition()) return;
+        else if (GetCarrotPosition()) return;
+        else StateChange(1);
     }
     bool GetCarrotPosition()
     {
@@ -90,12 +111,16 @@ public class Rabbit : MonoBehaviour
     }
     void Eat()
     {
-        //if (!isHungry) return;
+        if (!isHungry) return;
+        eatDelay -= Time.deltaTime;
+        if (eatDelay > 0) return;
         isHungry = false;
         if (!isOG)
         {
             GameManager.Instance.carrotPositions.Remove(targetCarrot);
+            GameManager.Instance.vegetationTilemap.SetTile(targetCarrot, null);
             transform.localRotation = new Quaternion(0f, 0f, 0f, 0f);
+            eatDelay = 1.5f;
         }
         else
         {
@@ -104,6 +129,7 @@ public class Rabbit : MonoBehaviour
             //Evolve!!!
             transform.localScale = new Vector3(1.25f, 1.25f);
             GameManager.Instance.ogCarrotPositions.Remove(targetCarrot);
+            eatDelay = 1.5f;
         }
     }
     void StateChange(int stateID)

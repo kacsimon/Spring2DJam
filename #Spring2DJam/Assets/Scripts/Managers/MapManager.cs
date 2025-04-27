@@ -15,7 +15,7 @@ public class MapManager : SingletonBase<MapManager>
         dataFromTilesDictionary = new Dictionary<TileBase, TileData>();
         foreach (var tileData in tileDataList)
         {
-            foreach (var tile in tileData.tiles)
+            foreach (var tile in tileData.tileArray)
             {
                 dataFromTilesDictionary.Add(tile, tileData);
             }

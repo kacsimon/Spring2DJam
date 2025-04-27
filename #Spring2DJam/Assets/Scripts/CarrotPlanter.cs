@@ -8,6 +8,7 @@ public class CarrotPlanter : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector3Int gridPosition = GameManager.Instance.vegetationTilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            if (GameManager.Instance.witheringPosition.Contains(gridPosition)) return;
             TileData data = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.farmTilemap, gridPosition);
             if (data == null || !data.canPlant) return;
             TileData VegetationData = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.vegetationTilemap, gridPosition);

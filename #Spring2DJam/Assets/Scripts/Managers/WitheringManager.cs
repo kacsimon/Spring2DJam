@@ -9,7 +9,7 @@ public class WitheringManager : MonoBehaviour
     [Header("For test:")]
     [SerializeField] float witheringDelay;
 
-    //List<Vector3Int> hasWithering = new List<Vector3Int>();
+    List<Vector3Int> hasWithering = new List<Vector3Int>();
     Vector3Int startPosition = new Vector3Int(-5, -3);
 
     void Start()
@@ -19,11 +19,12 @@ public class WitheringManager : MonoBehaviour
     }
     public void FinishedWithering(Vector3Int position)
     {
+        GameManager.Instance.witheringPosition.Add(position);
+        //GameManager.Instance.vegetationTilemap.SetTile(position, null);
+        GameManager.Instance.vegetationTilemap.SetTile(position, witheringTileArray[Random.Range(0, witheringTileArray.Length -1)]);
         if (GameManager.Instance.carrotPositions.Contains(position)) GameManager.Instance.carrotPositions.Remove(position);
         if (GameManager.Instance.ogCarrotPositions.Contains(position)) GameManager.Instance.ogCarrotPositions.Remove(position);
-        GameManager.Instance.vegetationTilemap.SetTile(position, witheringTileArray[Random.Range(0, witheringTileArray.Length)]);
     }
-
     public void TryToSpread(Vector3Int position, float spreadChance)
     {
         for (int x = position.x - 1; x < position.x + 2; x++)
@@ -35,10 +36,9 @@ public class WitheringManager : MonoBehaviour
         }
         void TryToWither(Vector3Int tilePosition)
         {
-            //if (hasWithering.Contains(tilePosition)) return;
-            if (GameManager.Instance.hasWithering.Contains(tilePosition)) return;
+            if (hasWithering.Contains(tilePosition)) return;
+            //if (GameManager.Instance.witheringPosition.Contains(tilePosition)) return;
             TileData tileData = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.farmTilemap, tilePosition);
-            //if (tileData.hasWithering) return;
             if (tileData != null && tileData.canWither)
             {
                 if (Random.Range(0f, 100f) <= tileData.spreadChance) SpreadWithering(tilePosition, tileData);
@@ -51,9 +51,8 @@ public class WitheringManager : MonoBehaviour
         Withering wither = Instantiate(witheringPrefab);
         wither.transform.position = GameManager.Instance.vegetationTilemap.GetCellCenterWorld(tilePosition);
         wither.StartWithering(tilePosition, tileData, this);
-        //tileData.hasWithering = true;
-        //hasWithering.Add(tilePosition);
-        GameManager.Instance.hasWithering.Add(tilePosition);
+        hasWithering.Add(tilePosition);
+        //GameManager.Instance.vegetationTilemap.SetTile(tilePosition, null);
     }
     void StartWither()
     {
