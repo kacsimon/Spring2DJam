@@ -1,16 +1,15 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class WitheringManager : MonoBehaviour
 {
     [SerializeField] TileBase[] witheringTileArray;
     [SerializeField] Withering witheringPrefab;
-    [Header("For test:")]
-    [SerializeField] float witheringDelay;
 
     List<Vector3Int> hasWithering = new List<Vector3Int>();
-    Vector3Int startPosition = new Vector3Int(-5, -3);
+    Vector3Int startPosition = new Vector3Int(-7, -3);
 
     void Start()
     {
@@ -21,7 +20,9 @@ public class WitheringManager : MonoBehaviour
     {
         GameManager.Instance.witheringPosition.Add(position);
         //GameManager.Instance.vegetationTilemap.SetTile(position, null);
-        GameManager.Instance.vegetationTilemap.SetTile(position, witheringTileArray[Random.Range(0, witheringTileArray.Length -1)]);
+        //Play animation
+        //GameManager.Instance.vegetationTilemap.SetTile(position, witheringTileArray[0]);
+        GameManager.Instance.vegetationTilemap.SetTile(position, witheringTileArray[Random.Range(1, witheringTileArray.Length - 1)]);
         if (GameManager.Instance.carrotPositions.Contains(position)) GameManager.Instance.carrotPositions.Remove(position);
         if (GameManager.Instance.ogCarrotPositions.Contains(position)) GameManager.Instance.ogCarrotPositions.Remove(position);
     }
@@ -36,6 +37,7 @@ public class WitheringManager : MonoBehaviour
         }
         void TryToWither(Vector3Int tilePosition)
         {
+            //if (!GameManager.Instance.witheringPosition.Contains(tilePosition)) hasWithering.Remove(tilePosition);
             if (hasWithering.Contains(tilePosition)) return;
             //if (GameManager.Instance.witheringPosition.Contains(tilePosition)) return;
             TileData tileData = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.farmTilemap, tilePosition);
@@ -58,13 +60,5 @@ public class WitheringManager : MonoBehaviour
     {
         TileData data = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.farmTilemap, startPosition);
         SpreadWithering(startPosition, data);
-    }
-    void CureWither(Vector3Int position)
-    {
-        //if has the power
-        //Destroy wither
-        //GameManager.Instance.vegetationTilemap.SetTile(position, null);
-        //hasWithering.Remove(position);
-        //make OGCarrot
     }
 }

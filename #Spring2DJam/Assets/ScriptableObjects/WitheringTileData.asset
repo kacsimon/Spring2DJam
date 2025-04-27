@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88204b782fe5cb54ba1c78f9d38b600a, type: 3}
   m_Name: WitheringTileData
   m_EditorClassIdentifier: 
-  tiles:
+  tileArray:
   - {fileID: 11400000, guid: 3894b55c64d946b408977c393cc9cebe, type: 2}
   - {fileID: 11400000, guid: 2baa3918ccac205459a38ae8dca2f06d, type: 2}
   canWither: 0
   canPlant: 0
+  infected: 0
   spreadChance: 0
   spreadInterval: 0
   witheringTime: 0

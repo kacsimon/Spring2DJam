@@ -3,16 +3,20 @@ using UnityEngine;
 public class RabbitSpawner : MonoBehaviour
 {
     [SerializeField] Transform bunnyPrefab;
-    [SerializeField] float spawnTimer = 5f;
+    [SerializeField] float minSpawnTime, maxSpawnTime;
+    float spawnTime;
 
+    void Start()
+    {
+        spawnTime = Random.Range(minSpawnTime, maxSpawnTime);
+    }
     void Update()
     {
-
-        spawnTimer -= Time.deltaTime;
-        if (spawnTimer <= 0)
+        spawnTime -= Time.deltaTime;
+        if (spawnTime <= 0)
         {
             Instantiate(bunnyPrefab, transform.position, transform.rotation);
-            spawnTimer = 5f;
+            spawnTime = Random.Range(minSpawnTime, maxSpawnTime);
         }
     }
 }

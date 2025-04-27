@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: WitheringGrowing
+  m_EditorClassIdentifier: 
+  m_AnimatedSprites:
+  - {fileID: 21300000, guid: 56aa331cebce9344cab8e658fdb1e195, type: 3}
+  - {fileID: 21300000, guid: 3836ce1030718fb4e851e8112d662f9f, type: 3}
+  - {fileID: 21300000, guid: e486caf04cd22a8469e842c0a9d45052, type: 3}
+  - {fileID: 21300000, guid: 851e4a57448f12749b86791da0a6300a, type: 3}
+  - {fileID: 21300000, guid: 50612ca1de2fef045be798ce1a8a0226, type: 3}
+  - {fileID: 21300000, guid: 9b178d431085ecc4a94e93328b376326, type: 3}
+  - {fileID: 21300000, guid: 4f26d1bf82913f44b80fa58f8886fd62, type: 3}
+  - {fileID: 21300000, guid: f7de73a3ff0325247b4944dbf217f1af, type: 3}
+  - {fileID: 21300000, guid: 1e965c8643ca5a9478b48f31d8411af2, type: 3}
+  - {fileID: 21300000, guid: 78f33c859e6e93a4fb6a854444d7377f, type: 3}
+  - {fileID: 21300000, guid: abc708f8e6515a74b947eff2e849e6be, type: 3}
+  - {fileID: 21300000, guid: 4c7df8e4607277e4e94448730be7b8bd, type: 3}
+  m_MinSpeed: 5
+  m_MaxSpeed: 5
+  m_AnimationStartTime: 0
+  m_AnimationStartFrame: 0
+  m_TileColliderType: 0
+  m_TileAnimationFlags: 0

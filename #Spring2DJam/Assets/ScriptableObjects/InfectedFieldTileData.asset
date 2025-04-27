@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88204b782fe5cb54ba1c78f9d38b600a, type: 3}
   m_Name: InfectedFieldTileData
   m_EditorClassIdentifier: 
-  tiles:
+  tileArray:
   - {fileID: 11400000, guid: 24ae5404fe576544aa9791a15b0fd6fa, type: 2}
   - {fileID: 11400000, guid: fb92adba0fb7edf4d8707a8af84f2d3d, type: 2}
   canWither: 1

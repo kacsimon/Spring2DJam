@@ -45,6 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carrot: {fileID: 11400000, guid: c6e69b0b9faffb548ac2e94ebac619b2, type: 2}
-  minGrowTime: 0.1
-  maxGrowTime: 0.5
+  minGrowTime: 3
+  maxGrowTime: 5
   state: 0

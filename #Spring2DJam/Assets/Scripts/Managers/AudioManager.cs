@@ -25,6 +25,8 @@ public class AudioManager : SingletonBase<AudioManager>
             sound.source.loop = sound.loop;
         }
         LoadVolume();
+        Play("Theme");
+        Play("Environment");
     }
     public void Play(string name)
     {
