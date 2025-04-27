@@ -17,6 +17,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1b3d8c9bdf07b6746825d68d1205923b, type: 2}
   canWither: 1
   canPlant: 1
+  infected: 0
   spreadChance: 30
   spreadInterval: 4
   witheringTime: 6

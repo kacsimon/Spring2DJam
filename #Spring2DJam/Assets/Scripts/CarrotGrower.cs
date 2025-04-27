@@ -65,7 +65,6 @@ public class CarrotGrower : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("Bunny ate carrot");
                         GameManager.Instance.vegetationTilemap.SetTile(position, null);
                         Destroy(gameObject);
                     }
@@ -79,14 +78,20 @@ public class CarrotGrower : MonoBehaviour
             case State.OGCarrot:
                 if (!GameManager.Instance.ogCarrotPositions.Contains(position))
                 {
-                    GameManager.Instance.ogCarrotPositions.Add(position);
-                    Debug.Log("Bunny ate carrot");
-                    GameManager.Instance.vegetationTilemap.SetTile(position, null);
-                    Destroy(gameObject);
+                    if (!isGrown)
+                    {
+                        GameManager.Instance.ogCarrotPositions.Add(position);
+                        isGrown = true;
+                    }
+                    else
+                    {
+                        GameManager.Instance.vegetationTilemap.SetTile(position, null);
+                        Destroy(gameObject);
+                    }
                 }
                 break;
         }
     }
     void SetGrowTimer() => growTimer = Random.Range(minGrowTime, maxGrowTime);
-    public void SetCarrotInfected() => infected = true;
+    public void SetCarrotInfected(bool _bool) => infected = _bool;
 }

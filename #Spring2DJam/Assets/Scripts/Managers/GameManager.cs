@@ -10,4 +10,5 @@ public class GameManager : SingletonBase<GameManager>
 
     public List<Vector3Int> carrotPositions = new List<Vector3Int>();
     public List<Vector3Int> ogCarrotPositions = new List<Vector3Int>();
+    public List<Vector3Int> hasWithering = new List<Vector3Int>();
 }

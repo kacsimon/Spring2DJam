@@ -12,7 +12,8 @@ public class CarrotPlanter : MonoBehaviour
             if (data == null || !data.canPlant) return;
             TileData VegetationData = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.vegetationTilemap, gridPosition);
             if (VegetationData != null) return;
-            Instantiate(carrotGrower, gridPosition, Quaternion.identity);
+            CarrotGrower plantedCarrot = Instantiate(carrotGrower, gridPosition, Quaternion.identity);
+            plantedCarrot.SetCarrotInfected(data.infected);
         }
     }
 }
