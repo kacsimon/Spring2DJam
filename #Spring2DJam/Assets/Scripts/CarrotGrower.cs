@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class CarrotGrower : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class CarrotGrower : MonoBehaviour
 
     void Start()
     {
+        //World position to Cell Position
         growPosition = new Vector3Int((int)transform.position.x, (int)transform.position.y);
         GameManager.Instance.vegetationTilemap.SetTile(growPosition, carrot.seedlingPrefab);
         SetGrowTimer();
@@ -33,7 +35,7 @@ public class CarrotGrower : MonoBehaviour
     }
     void GrowCarrot(Vector3Int position)
     {
-        if (GameManager.Instance.witheringPosition.Contains(position)) return;
+        if (GameManager.Instance.witheringPositionList.Contains(position)) return;
         growTimer -= Time.deltaTime;
         if (growTimer > 0) return;
         switch (state)
@@ -41,57 +43,63 @@ public class CarrotGrower : MonoBehaviour
             case State.Seedling:
                 if (!infected)
                 {
-                    GameManager.Instance.vegetationTilemap.SetTile(position, carrot.plantPrefab);
+                    SetCarrotVisual(position, carrot.plantPrefab);
                     state = State.Plant;
                 }
                 else
                 {
-                    GameManager.Instance.vegetationTilemap.SetTile(position, carrot.ogPlantPrefab);
+                    SetCarrotVisual(position, carrot.ogPlantPrefab);
                     state = State.OGPlant;
                 }
                 SetGrowTimer();
                 break;
             case State.Plant:
-                GameManager.Instance.vegetationTilemap.SetTile(position, carrot.carrotPrefab);
+                SetCarrotVisual(position, carrot.carrotPrefab);
                 state = State.Carrot;
                 SetGrowTimer();
                 break;
             case State.Carrot:
-                if (!GameManager.Instance.carrotPositions.Contains(position))
+                if (!GameManager.Instance.carrotPositionList.Contains(position))
                 {
+                    ///Need to refactor here
                     if (!isGrown)
                     {
-                        GameManager.Instance.carrotPositions.Add(position);
+                        GameManager.Instance.carrotPositionList.Add(position);
                         isGrown = true;
                     }
                     else
                     {
-                        GameManager.Instance.vegetationTilemap.SetTile(position, null);
+                        SetCarrotVisual(position, null);
                         Destroy(gameObject);
                     }
                 }
                 break;
             case State.OGPlant:
-                GameManager.Instance.vegetationTilemap.SetTile(position, carrot.ogCarrotPrefab);
+                SetCarrotVisual(position, carrot.ogCarrotPrefab);
                 state = State.OGCarrot;
                 SetGrowTimer();
                 break;
             case State.OGCarrot:
-                if (!GameManager.Instance.ogCarrotPositions.Contains(position))
+                if (!GameManager.Instance.ogCarrotPositionList.Contains(position))
                 {
+                    ///Need to refactor here
                     if (!isGrown)
                     {
-                        GameManager.Instance.ogCarrotPositions.Add(position);
+                        GameManager.Instance.ogCarrotPositionList.Add(position);
                         isGrown = true;
                     }
                     else
                     {
-                        GameManager.Instance.vegetationTilemap.SetTile(position, null);
+                        SetCarrotVisual(position, null);
                         Destroy(gameObject);
                     }
                 }
                 break;
         }
+    }
+    void SetCarrotVisual(Vector3Int _position, TileBase _prefab)
+    {
+        GameManager.Instance.vegetationTilemap.SetTile(_position, _prefab);
     }
     void SetGrowTimer() => growTimer = Random.Range(minGrowTime, maxGrowTime);
     public void SetCarrotInfected(bool _bool) => infected = _bool;

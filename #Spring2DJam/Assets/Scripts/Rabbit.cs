@@ -6,13 +6,9 @@ public class Rabbit : MonoBehaviour
 {
     public event EventHandler<State> OnStateChange;
     public event EventHandler<bool> OnIsMove;
+    public event EventHandler<bool> OnSpriteFlip;
 
     [SerializeField] float velocity = 3f;
-    Vector3Int targetCarrot = new Vector3Int(6, 1);
-    bool isHungry = true, isOG, isDragging;
-    float eatDelay = 1.5f;
-    int eatedWither = 0, maxEatedWither = 3;
-
     public enum State
     {
         Casual,
@@ -21,13 +17,18 @@ public class Rabbit : MonoBehaviour
         Fed
     }
     State state = State.Casual;
+    Vector3Int targetCarrot = new Vector3Int(6, 1);
+    bool isHungry = true, isOG, isDragging;
+    float eatDelay = 1.5f;
+    int eatedWither = 0, maxEatedWither = 3;
     void Start()
     {
-        transform.localRotation = new Quaternion(0f, 180f, 0f, 0f);
+        FlipSprite(targetCarrot);
         SearchForCarrot();
     }
     void FixedUpdate()
     {
+        OnStateChange?.Invoke(this, state);
         switch (state)
         {
             case State.Casual:
@@ -35,8 +36,10 @@ public class Rabbit : MonoBehaviour
                 break;
             case State.Angry:
                 Move();
+                //TODO: ruin your field
                 break;
             case State.Overgrown:
+                //World position to Cell Position
                 Vector3Int currentPosition = new Vector3Int((int)transform.position.x, (int)transform.position.y);
                 if (isDragging) return;
                 if (eatedWither == maxEatedWither)
@@ -50,53 +53,65 @@ public class Rabbit : MonoBehaviour
             case State.Fed:
                 OnIsMove?.Invoke(this, true);
                 transform.localScale = Vector3.one;
-                transform.localRotation = new Quaternion(0f, 0f, 0f, 0f);
                 Vector3 destination = new Vector3(6.3f, 2f, 0f);
                 transform.position = Vector3.MoveTowards(transform.position, destination, velocity * Time.deltaTime);
+                FlipSprite(destination);
                 if (transform.position == destination) Destroy(gameObject);
                 break;
         }
-        OnStateChange?.Invoke(this, state);
     }
     void CheckForWithering(Vector3Int currentPosition)
     {
         if (isDragging) return;
-
         for (int x = currentPosition.x - 1; x <= currentPosition.x + 1; x++)
         {
             for (int y = currentPosition.y - 1; y <= currentPosition.y + 1; y++)
             {
+                //Neighbour positions and current (all 9)
                 Vector3Int checkPos = new Vector3Int(x, y, 0);
 
-                if (GameManager.Instance.witheringPosition.Contains(checkPos))
+                if (GameManager.Instance.witheringPositionList.Contains(checkPos))
                 {
-                    // Move toward it and eat when close enough
-                    transform.position = Vector3.MoveTowards(transform.position, (Vector3)checkPos, velocity * Time.deltaTime);
-
-                    if (Vector3.Distance(transform.position, checkPos) < 0.1f)
+                    OnIsMove?.Invoke(this, true);
+                    //Store it
+                    TileBase tileWithWithering = GameManager.Instance.farmTilemap.GetTile(checkPos);
+                    //TODO: choose random one to move towards
+                    // Move toward it
+                    Vector3 targetPosition = GameManager.Instance.farmTilemap.GetCellCenterWorld(checkPos);
+                    transform.position = Vector3.MoveTowards(transform.position, targetPosition, velocity * Time.deltaTime);
+                    FlipSprite(targetPosition);
+                    //Eat when close enough
+                    if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
                     {
+                        AudioManager.Instance.Play("EatWither");
+                        eatDelay -= Time.deltaTime;
+                        if (eatDelay > 0) return;
                         // Eat it
-                        GameManager.Instance.witheringPosition.Remove(checkPos);
-                        GameManager.Instance.vegetationTilemap.SetTile(checkPos, null);
                         eatedWither++;
+                        GameManager.Instance.witheringPositionList.Remove(checkPos);
+                        GameManager.Instance.vegetationTilemap.SetTile(checkPos, null);
+                        eatDelay = 1.5f;
 
-                        // Optional: replace farm tile here too
+                        // Set farm tile infected
                         TileBase farmTile = GameManager.Instance.farmTilemap.GetTile(checkPos);
-                        if (UnityEngine.Random.Range(0, 100) >= 50)
+                        if (UnityEngine.Random.Range(0, 100) >= 50) //50% chance
                         {
                             GameManager.Instance.farmTilemap.SetTile(checkPos, MapManager.Instance.GetChangedFarmTile(farmTile));
                         }
-
+                        //Became fed
                         if (eatedWither >= maxEatedWither)
                         {
                             state = State.Fed;
                             transform.localScale = Vector3.one;
-                            transform.localRotation = Quaternion.identity;
                             return;
                         }
                     }
 
                     return; // Eat only one per frame
+                }
+                else
+                {
+                    //Move random direction
                 }
             }
         }
@@ -115,54 +130,61 @@ public class Rabbit : MonoBehaviour
     void Move()
     {
         OnIsMove?.Invoke(this, true);
-        if (GameManager.Instance.witheringPosition.Contains(targetCarrot)) SearchForCarrot();
+        if (GameManager.Instance.witheringPositionList.Contains(targetCarrot)) SearchForCarrot();
         //else if (GameManager.Instance.ogCarrotPositions.Count > 0) SearchForCarrot();
         //else if (GameManager.Instance.carrotPositions.Count > 0) SearchForCarrot();
         Vector3 targetPosition = GameManager.Instance.vegetationTilemap.GetCellCenterWorld(targetCarrot);
-        if (isHungry) transform.position = Vector3.MoveTowards(transform.position, targetPosition, velocity * Time.deltaTime);
-        else transform.position = Vector3.MoveTowards(transform.position, new Vector3(13f, 0f, 0f), velocity * Time.deltaTime);
+        if (isHungry)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, velocity * Time.deltaTime);
+            FlipSprite(targetCarrot);
+        }
+        else
+        {
+            Vector3 destination = new Vector3(13f, 0f, 0f);
+            transform.position = Vector3.MoveTowards(transform.position, destination, velocity * Time.deltaTime);
+            FlipSprite(destination);
+        }
+        //AudioManager.Instance.Play("Jump");
         //Eat when reach destination
-        if (targetPosition == transform.position) Eat();
+        if (Vector3.Distance(transform.position, targetPosition) < 0.1f) Eat();
         if (transform.position == new Vector3(13f, 0f, 0f)) Destroy(gameObject, 1f);
     }
     void SearchForCarrot()
     {
         //StateChange(0);
-        if (GetOGCarrotPosition()) return;
-        else if (GetCarrotPosition()) return;
+        if (IsGetOGCarrotPosition()) return;
+        else if (IsGetCarrotPosition()) return;
         else state = State.Angry;
     }
-    bool GetCarrotPosition()
+    bool IsGetCarrotPosition()
     {
-        if (GameManager.Instance.carrotPositions.Count == 0) return false;
-        int randomIndex = UnityEngine.Random.Range(0, GameManager.Instance.carrotPositions.Count);
-        targetCarrot = GameManager.Instance.carrotPositions[randomIndex];
+        if (GameManager.Instance.carrotPositionList.Count == 0) return false;
+        int randomIndex = UnityEngine.Random.Range(0, GameManager.Instance.carrotPositionList.Count);
+        targetCarrot = GameManager.Instance.carrotPositionList[randomIndex];
         isOG = false;
-        //isHungry = false;
         return true;
     }
-    bool GetOGCarrotPosition()
+    bool IsGetOGCarrotPosition()
     {
-        if (GameManager.Instance.ogCarrotPositions.Count == 0) return false;
-        int randomIndex = UnityEngine.Random.Range(0, GameManager.Instance.ogCarrotPositions.Count);
-        targetCarrot = GameManager.Instance.ogCarrotPositions[randomIndex];
+        if (GameManager.Instance.ogCarrotPositionList.Count == 0) return false;
+        int randomIndex = UnityEngine.Random.Range(0, GameManager.Instance.ogCarrotPositionList.Count);
+        targetCarrot = GameManager.Instance.ogCarrotPositionList[randomIndex];
         isOG = true;
-        //isHungry = false;
         return true;
     }
     void Eat()
     {
         OnIsMove?.Invoke(this, false);
         if (!isHungry) return;
-        AudioManager.Instance.Play("Eat");
+        AudioManager.Instance.Play("EatCarrot");
         eatDelay -= Time.deltaTime;
         if (eatDelay > 0) return;
         isHungry = false;
         if (!isOG)
         {
-            GameManager.Instance.carrotPositions.Remove(targetCarrot);
+            GameManager.Instance.carrotPositionList.Remove(targetCarrot);
             GameManager.Instance.vegetationTilemap.SetTile(targetCarrot, null);
-            transform.localRotation = new Quaternion(0f, 0f, 0f, 0f);
             eatDelay = 1.5f;
         }
         else
@@ -170,9 +192,14 @@ public class Rabbit : MonoBehaviour
             state = State.Overgrown;
             //Evolve!!!
             transform.localScale = new Vector3(1.25f, 1.25f);
-            GameManager.Instance.ogCarrotPositions.Remove(targetCarrot);
+            GameManager.Instance.ogCarrotPositionList.Remove(targetCarrot);
             eatDelay = 1.5f;
         }
+    }
+    void FlipSprite(Vector3 destination)
+    {
+        if (destination.x < transform.position.x) OnSpriteFlip?.Invoke(this, true);
+        else if (destination.x > transform.position.x) OnSpriteFlip?.Invoke(this, false);
     }
     Vector2 GetMouseWorldPosition()
     {

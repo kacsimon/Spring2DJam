@@ -4,11 +4,11 @@ public class RabbitSpawner : MonoBehaviour
 {
     [SerializeField] Transform bunnyPrefab;
     [SerializeField] float minSpawnTime, maxSpawnTime;
-    float spawnTime;
+    float spawnTime, spawnMultiplier = 1f, minSpawnMultiplier = .4f;
 
     void Start()
     {
-        spawnTime = Random.Range(minSpawnTime, maxSpawnTime);
+        spawnTime = 13f * spawnMultiplier;
     }
     void Update()
     {
@@ -16,7 +16,8 @@ public class RabbitSpawner : MonoBehaviour
         if (spawnTime <= 0)
         {
             Instantiate(bunnyPrefab, transform.position, transform.rotation);
-            spawnTime = Random.Range(minSpawnTime, maxSpawnTime);
+            spawnTime = Random.Range(minSpawnTime, maxSpawnTime) * spawnMultiplier;
+            if (spawnMultiplier > minSpawnMultiplier) spawnMultiplier -= .01f;
         }
     }
 }

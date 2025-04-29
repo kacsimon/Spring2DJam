@@ -9,15 +9,19 @@ public class RabbitVisual : MonoBehaviour
 
     Rabbit rabbit;
     Animator animator;
+    SpriteRenderer spriteRenderer;
+
     void Awake()
     {
         rabbit = GetComponentInParent<Rabbit>();
         animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
     void Start()
     {
         rabbit.OnStateChange += Rabbit_OnStateChange;
-        rabbit.OnIsMove += Rabbit_OnIsMove; ;
+        rabbit.OnIsMove += Rabbit_OnIsMove;
+        rabbit.OnSpriteFlip += Rabbit_OnSpriteFlip;
     }
     void Rabbit_OnIsMove(object sender, bool _bool)
     {
@@ -45,9 +49,12 @@ public class RabbitVisual : MonoBehaviour
                 break;
         }
     }
+    void Rabbit_OnSpriteFlip(object sender, bool _bool)
+    {
+        spriteRenderer.flipX = _bool;
+    }
     void DisableAllAnimation()
     {
-        //animator.SetBool(IS_MOVE, false);
         animator.SetBool(IS_ANGRY, false);
         animator.SetBool(IS_OG, false);
         animator.SetBool(IS_FED, false);
