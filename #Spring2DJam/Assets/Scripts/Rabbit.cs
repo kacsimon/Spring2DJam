@@ -18,9 +18,10 @@ public class Rabbit : MonoBehaviour
     }
     State state = State.Casual;
     Vector3Int targetCarrot = new Vector3Int(6, 1);
-    bool isHungry = true, isOG, isDragging;
+    bool isHungry = true, isOG, isDragging/*, isFindField = false*/;
     float eatDelay = 1.5f;
     int eatedWither = 0, maxEatedWither = 3;
+
     void Start()
     {
         FlipSprite(targetCarrot);
@@ -36,7 +37,15 @@ public class Rabbit : MonoBehaviour
                 break;
             case State.Angry:
                 Move();
-                //TODO: ruin your field
+                //Vector3Int currentPosition = new Vector3Int((int)transform.position.x, (int)transform.position.y);
+                //if (!isFindField) CheckForField(currentPosition);
+                //else
+                //{
+                //    //TODO: ruin your field
+                //    Debug.Log("Ruin field at " + currentPosition);
+                //    state = State.Fed;
+                //    //Move();
+                //}
                 break;
             case State.Overgrown:
                 //World position to Cell Position
@@ -60,6 +69,32 @@ public class Rabbit : MonoBehaviour
                 break;
         }
     }
+    //void CheckForField(Vector3Int currentPosition)
+    //{
+    //    for (int x = currentPosition.x - 1; x <= currentPosition.x + 1; x++)
+    //    {
+    //        for (int y = currentPosition.y - 1; y <= currentPosition.y + 1; y++)
+    //        {
+    //            //Neighbour positions and current (all 9)
+    //            Vector3Int checkPos = new Vector3Int(x, y, 0);
+    //            TileData data = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.farmTilemap, checkPos);
+    //            if (data == null || !data.canPlant)
+    //            {
+    //                transform.position = Vector3.MoveTowards(transform.position, Vector3.left, velocity * Time.deltaTime);
+    //                isFindField = false;
+    //                Debug.Log("Can't find field");
+    //            }
+    //            else
+    //            {
+    //                Vector3 targetPosition = GameManager.Instance.farmTilemap.GetCellCenterWorld(checkPos);
+    //                transform.position = Vector3.MoveTowards(transform.position, targetPosition, velocity * Time.deltaTime);
+    //                Debug.Log("Field in " + checkPos + " position");
+    //                isFindField = true;
+    //                return;
+    //            }
+    //        }
+    //    }
+    //}
     void CheckForWithering(Vector3Int currentPosition)
     {
         if (isDragging) return;

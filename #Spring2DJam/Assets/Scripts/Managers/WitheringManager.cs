@@ -7,7 +7,7 @@ public class WitheringManager : MonoBehaviour
 {
     [SerializeField] TileBase[] witheringTileArray;
     [SerializeField] Withering witheringPrefab;
-    [SerializeField] float witheringAnimationTime;
+    [SerializeField] float witheringAnimationTime, spreadDelay;
 
     List<Vector3Int> hasWitheringList = new List<Vector3Int>();
     Vector3Int startPosition = new Vector3Int(-7, -3);
@@ -17,13 +17,28 @@ public class WitheringManager : MonoBehaviour
         //TODO: StartWither at random position
         StartWither();
     }
+    void Update()
+    {
+        foreach (var withtering in GameManager.Instance.witheringPositionList)
+        {
+            TileData tileData = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.farmTilemap, withtering);
+            spreadDelay -= Time.deltaTime;
+            if (spreadDelay <= 0)
+            {
+                //spreadDelay = tileData.spreadDelay;
+                spreadDelay = 20f;
+                TryToSpread(withtering);
+            }
+        }
+    }
     public void FinishedWithering(Vector3Int position)
     {
         //Play animation
         StartCoroutine(Withering(position));
         GameManager.Instance.witheringPositionList.Add(position);
         if (GameManager.Instance.carrotPositionList.Contains(position)) GameManager.Instance.carrotPositionList.Remove(position);
-        if (GameManager.Instance.ogCarrotPositionList.Contains(position)) GameManager.Instance.ogCarrotPositionList.Remove(position); 
+        if (GameManager.Instance.ogCarrotPositionList.Contains(position)) GameManager.Instance.ogCarrotPositionList.Remove(position);
+        hasWitheringList.Remove(position);
     }
     IEnumerator Withering(Vector3Int position)
     {
@@ -31,7 +46,7 @@ public class WitheringManager : MonoBehaviour
         yield return new WaitForSeconds(witheringAnimationTime);
         GameManager.Instance.vegetationTilemap.SetTile(position, witheringTileArray[Random.Range(1, witheringTileArray.Length)]);
     }
-    public void TryToSpread(Vector3Int position, float spreadChance)
+    public void TryToSpread(Vector3Int position)
     {
         for (int x = position.x - 1; x < position.x + 2; x++)
         {
@@ -44,7 +59,7 @@ public class WitheringManager : MonoBehaviour
         {
             //if (!GameManager.Instance.witheringPosition.Contains(tilePosition)) hasWithering.Remove(tilePosition);
             if (hasWitheringList.Contains(tilePosition)) return;
-            //if (GameManager.Instance.witheringPosition.Contains(tilePosition)) return;
+            if (GameManager.Instance.witheringPositionList.Contains(tilePosition)) return;
             TileData tileData = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.farmTilemap, tilePosition);
             if (tileData != null && tileData.canWither)
             {

@@ -21,6 +21,7 @@ MonoBehaviour:
   canWither: 1
   canPlant: 0
   infected: 0
-  spreadChance: 20
+  spreadDelay: 15
+  spreadChance: 10
   spreadInterval: 2
   witheringTime: 3

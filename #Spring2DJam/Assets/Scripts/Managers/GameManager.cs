@@ -11,7 +11,7 @@ public class GameManager : SingletonBase<GameManager>
     [SerializeField] float witheringSpreadIntensity;
     [SerializeField] float bunnySpawnIntensity;
 
-    //[HideInInspector] public List<Vector3Int> reservedCarrots = new List<Vector3Int>();
+    //[HideInInspector] public List<Vector3Int> reservedCarrotList = new List<Vector3Int>();
     [HideInInspector] public List<Vector3Int> carrotPositionList = new List<Vector3Int>();
     [HideInInspector] public List<Vector3Int> ogCarrotPositionList = new List<Vector3Int>();
     [HideInInspector] public List<Vector3Int> witheringPositionList = new List<Vector3Int>();

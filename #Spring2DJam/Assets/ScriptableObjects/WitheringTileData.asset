@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: WitheringTileData
   m_EditorClassIdentifier: 
   tileArray:
+  - {fileID: 11400000, guid: caca4795e2047ca469784e2b768d2d9d, type: 2}
   - {fileID: 11400000, guid: 3894b55c64d946b408977c393cc9cebe, type: 2}
   - {fileID: 11400000, guid: 2baa3918ccac205459a38ae8dca2f06d, type: 2}
   canWither: 0
