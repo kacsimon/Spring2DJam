@@ -5,7 +5,7 @@ public class Withering : MonoBehaviour
     Vector3Int position;
     TileData data;
     WitheringManager witheringManager;
-    float witheringTimeCounter, spreadIntervalCounter/*, spreadDelay*/;
+    float witheringTimeCounter, spreadIntervalCounter;
 
     public void StartWithering(Vector3Int position, TileData data, WitheringManager witheringManager)
     {
@@ -15,7 +15,6 @@ public class Withering : MonoBehaviour
 
         witheringTimeCounter = data.witheringTime;
         spreadIntervalCounter = data.spreadInterval;
-        //spreadDelay = data.spreadDelay;
     }
     void Update()
     {
@@ -30,12 +29,6 @@ public class Withering : MonoBehaviour
         if(spreadIntervalCounter <= 0)
         {
             spreadIntervalCounter = data.spreadInterval;
-            //spreadDelay -= Time.deltaTime;
-            //if (spreadDelay <= 0)
-            //{
-            //    spreadDelay = data.spreadDelay;
-            //    //witheringManager.TryToSpread(position);
-            //}
         }
     }
 }

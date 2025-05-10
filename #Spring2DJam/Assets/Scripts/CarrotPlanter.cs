@@ -22,7 +22,7 @@ public class CarrotPlanter : MonoBehaviour
             //Plant the carrot
             CarrotGrower plantedCarrot = Instantiate(carrotGrower, gridPosition, Quaternion.identity);
             //Set infected if the field infected
-            plantedCarrot.SetCarrotInfected(data.infected);
+            plantedCarrot.SetCarrotInfected(data.isInfected);
         }
     }
 }

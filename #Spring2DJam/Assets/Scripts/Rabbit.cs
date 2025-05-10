@@ -18,7 +18,7 @@ public class Rabbit : MonoBehaviour
     }
     State state = State.Casual;
     Vector3Int targetCarrot = new Vector3Int(6, 1);
-    bool isHungry = true, isOG, isDragging/*, isFindField = false*/;
+    bool isHungry = true, isFoundOG, isDragging/*, isFindField = false*/;
     float eatDelay = 1.5f;
     int eatedWither = 0, maxEatedWither = 3;
 
@@ -187,26 +187,25 @@ public class Rabbit : MonoBehaviour
     }
     void SearchForCarrot()
     {
-        //StateChange(0);
-        if (IsGetOGCarrotPosition()) return;
-        else if (IsGetCarrotPosition()) return;
-        else state = State.Angry;
-    }
-    bool IsGetCarrotPosition()
-    {
-        if (GameManager.Instance.carrotPositionList.Count == 0) return false;
-        int randomIndex = UnityEngine.Random.Range(0, GameManager.Instance.carrotPositionList.Count);
-        targetCarrot = GameManager.Instance.carrotPositionList[randomIndex];
-        isOG = false;
-        return true;
-    }
-    bool IsGetOGCarrotPosition()
-    {
-        if (GameManager.Instance.ogCarrotPositionList.Count == 0) return false;
-        int randomIndex = UnityEngine.Random.Range(0, GameManager.Instance.ogCarrotPositionList.Count);
-        targetCarrot = GameManager.Instance.ogCarrotPositionList[randomIndex];
-        isOG = true;
-        return true;
+        if (GameManager.Instance.ogCarrotPositionList.Count != 0)
+        {
+            //There is at least one OG carrot
+            int randomIndex = UnityEngine.Random.Range(0, GameManager.Instance.ogCarrotPositionList.Count);
+            targetCarrot = GameManager.Instance.ogCarrotPositionList[randomIndex];
+            isFoundOG = true;
+        }
+        else if (GameManager.Instance.carrotPositionList.Count != 0)
+        {
+            //There is at least one carrot
+            int randomIndex = UnityEngine.Random.Range(0, GameManager.Instance.carrotPositionList.Count);
+            targetCarrot = GameManager.Instance.carrotPositionList[randomIndex];
+            isFoundOG = false;
+        }
+        else
+        {
+            //There is no carrot
+            state = State.Angry;
+        }
     }
     void Eat()
     {
@@ -216,7 +215,7 @@ public class Rabbit : MonoBehaviour
         eatDelay -= Time.deltaTime;
         if (eatDelay > 0) return;
         isHungry = false;
-        if (!isOG)
+        if (!isFoundOG)
         {
             GameManager.Instance.carrotPositionList.Remove(targetCarrot);
             GameManager.Instance.vegetationTilemap.SetTile(targetCarrot, null);

@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 88204b782fe5cb54ba1c78f9d38b600a, type: 3}
-  m_Name: InfectedFieldTileData
+  m_Name: RuinedFieldTileData
   m_EditorClassIdentifier: 
   tileArray:
-  - {fileID: 11400000, guid: 24ae5404fe576544aa9791a15b0fd6fa, type: 2}
-  - {fileID: 11400000, guid: fb92adba0fb7edf4d8707a8af84f2d3d, type: 2}
+  - {fileID: 11400000, guid: 8b3e40e1d30d2d44bbde461b468ef8e4, type: 2}
+  - {fileID: 11400000, guid: 7c3fc719aac2cb6409f3fd1b12c2a828, type: 2}
+  - {fileID: 11400000, guid: a6f63c5ddd397b74686d608bb294a121, type: 2}
   canWither: 1
-  canPlant: 1
+  canPlant: 0
   isInfected: 0
-  isRuined: 0
-  spreadDelay: 25
+  isRuined: 1
+  spreadDelay: 20
   spreadChance: 15
   spreadInterval: 4
   witheringTime: 6

@@ -17,7 +17,7 @@ public class RabbitSpawner : MonoBehaviour
         {
             Instantiate(bunnyPrefab, transform.position, transform.rotation);
             spawnTime = Random.Range(minSpawnTime, maxSpawnTime) * spawnMultiplier;
-            if (spawnMultiplier > minSpawnMultiplier) spawnMultiplier -= .01f;
+            if (spawnMultiplier > minSpawnMultiplier) spawnMultiplier -= .05f;
         }
     }
 }

@@ -16,7 +16,7 @@ public class RabbitMovement : MonoBehaviour
         Fed
     }
     State state = State.Casual;
-    bool isDragging;
+    bool isDragging, isFoundOG;
 
     void FixedUpdate()
     {
@@ -40,10 +40,12 @@ public class RabbitMovement : MonoBehaviour
         switch (state)
         {
             case State.Casual:
+                //search for carrot
                 //if there is a carrot, move to the carrot
                 //if there isn't a carrot, state = State.Angry
                 break;
             case State.Angry:
+                //search for carrot
                 //move to a random field
                 break;
             case State.Overgrown:
@@ -68,6 +70,29 @@ public class RabbitMovement : MonoBehaviour
     {
         if (destination.x < transform.position.x) OnSpriteFlip?.Invoke(this, true);
         else if (destination.x > transform.position.x) OnSpriteFlip?.Invoke(this, false);
+    }
+    void SearchForCarrot()
+    {
+        if (GameManager.Instance.ogCarrotPositionList.Count != 0)
+        {
+            //There is at least one OG carrot
+            isFoundOG = true;
+            int randomIndex = UnityEngine.Random.Range(0, GameManager.Instance.ogCarrotPositionList.Count);
+            Vector3Int targetCarrot = GameManager.Instance.ogCarrotPositionList[randomIndex];
+            Vector3 targetPosition = GameManager.Instance.vegetationTilemap.GetCellCenterWorld(targetCarrot);
+        }
+        else if (GameManager.Instance.carrotPositionList.Count != 0)
+        {
+            //There is at least one carrot
+            isFoundOG = false;
+            int randomIndex = UnityEngine.Random.Range(0, GameManager.Instance.carrotPositionList.Count);
+            Vector3Int targetCarrot = GameManager.Instance.carrotPositionList[randomIndex];
+        }
+        else
+        {
+            //There is no carrot
+            state = State.Angry;
+        }
     }
     Vector2 GetMouseWorldPosition()
     {
