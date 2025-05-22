@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-    int clickCount = 0;
+    [SerializeField] EarthPile earthPile;
 
     void Update()
     {
@@ -12,35 +12,34 @@ public class PlayerInput : MonoBehaviour
             //Don't click if rabbit in front
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
             if (hit.collider != null) return;
-            Vector3Int gridPosition = GameManager.Instance.vegetationTilemap.WorldToCell(mousePosition);
-            //Don't click if withering there
-            if (GameManager.Instance.witheringPositionList.Contains(gridPosition)) return;
+            Vector3Int gridPosition = GameManager.Instance.interactableTilemap.WorldToCell(mousePosition);
+            ////Don't click if withering there
+            //if (GameManager.Instance.witheringPositionList.Contains(gridPosition)) return;
             //Check if it ruined
-            TileData data = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.vegetationTilemap, gridPosition);
-            if (data == null || !data.isRuined) return;
-            //Click!
-            clickCount++;
-            GameManager.Instance.vegetationTilemap.SetTile(gridPosition, data.tileArray[clickCount]);
-
-            //RepairField(gridPosition);
+            if (GameManager.Instance.interactableTilemap.GetTile(gridPosition) == null) return;
+            TileData data = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.interactableTilemap, gridPosition);
+            //data.clickCount = 0;
+            RepairField(gridPosition, data);
         }
     }
-    //int GetRepairedTime(Vector3Int _gridPosition, TileData _data)
-    //{
-    //    _data.tileArray.
-    //}
-    //void RepairField(Vector3Int _gridPosition, TileData _data, int _amount)
-    //{
-    //    if (data.tileArray.Length > clickCount)
-    //    {
-    //        //Change the ruined tile
-    //        GameManager.Instance.vegetationTilemap.SetTile(_gridPosition, data.tileArray[clickCount]);
-    //    }
-    //    else
-    //    {
-    //        //Outside the bounds of the array
-    //        //Field repaired
-    //        GameManager.Instance.vegetationTilemap.SetTile(_gridPosition, null);
-    //    }
-    //}
+    void RepairField(Vector3Int _gridPosition, TileData _data)
+    {
+        if (GameManager.Instance.interactableTilemap.GetTile(_gridPosition) == earthPile.EarthPilePrefabArray[_data.clickCount])
+        {
+            _data.clickCount++;
+            if (_data.clickCount < earthPile.EarthPilePrefabArray.Length)
+            {
+                //Change the ruined tile
+                GameManager.Instance.interactableTilemap.SetTile(_gridPosition, earthPile.EarthPilePrefabArray[_data.clickCount]);
+            }
+            else
+            {
+                //Outside the bounds of the array
+                //Field repaired
+                GameManager.Instance.interactableTilemap.SetTile(_gridPosition, null);
+                _data.clickCount = 0;
+
+            }
+        }
+    }
 }

@@ -46,11 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2d7062fe30cb5a4eb4ea916532d3b1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gfxPrefabArray:
-  - {fileID: 6802583317933345258, guid: 6c3a1bacc00f20c41b5c29395983473e, type: 3}
-  - {fileID: 414912623820343976, guid: 37e05ca279dae184d93a38ec28c64565, type: 3}
-  - {fileID: 8843385801722557275, guid: 6df94202a5530124490b60a2162ba7c3, type: 3}
   velocity: 3
+  ruinedTilePrefab: {fileID: 11400000, guid: 27dd1f2ecc8300f40b00ca2526c26841, type: 2}
 --- !u!61 &5996368735148381054
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -67,11 +67,7 @@ public class CarrotGrower : MonoBehaviour
                         GameManager.Instance.carrotPositionList.Add(position);
                         isGrown = true;
                     }
-                    else
-                    {
-                        SetCarrotVisual(position, null);
-                        Destroy(gameObject);
-                    }
+                    else HarvestCarrot(position);
                 }
                 break;
             case State.OGPlant:
@@ -88,14 +84,15 @@ public class CarrotGrower : MonoBehaviour
                         GameManager.Instance.ogCarrotPositionList.Add(position);
                         isGrown = true;
                     }
-                    else
-                    {
-                        SetCarrotVisual(position, null);
-                        Destroy(gameObject);
-                    }
+                    else HarvestCarrot(position);
                 }
                 break;
         }
+    }
+    void HarvestCarrot(Vector3Int _position)
+    {
+        SetCarrotVisual(_position, null);
+        Destroy(gameObject);
     }
     void SetCarrotVisual(Vector3Int _position, TileBase _prefab)
     {

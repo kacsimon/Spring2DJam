@@ -6,6 +6,8 @@ using System.Collections.Generic;
 public class MapManager : SingletonBase<MapManager>
 {
     [SerializeField] List<TileData> tileDataList;
+    [SerializeField] TileChange farmTile1;
+    [SerializeField] TileChange farmTile2;
 
     Dictionary<TileBase, TileData> dataFromTilesDictionary;
 
@@ -28,10 +30,9 @@ public class MapManager : SingletonBase<MapManager>
         if (tile == null) return null;
         else return dataFromTilesDictionary[tile];
     }
-    public TileBase GetChangedFarmTile(TileBase tile)
+    public void ChangeFarmTile(Tilemap tilemap, Vector3Int tilePosition)
     {
-        if (tile.name == "Field01") return tileDataList[1].tileArray[0];
-        if (tile.name == "Field02") return tileDataList[1].tileArray[1];
-        return tile;
+        if (tilemap.GetTile(tilePosition) == farmTile1.input) tilemap.SetTile(tilePosition, farmTile1.output);
+        else if (tilemap.GetTile(tilePosition) == farmTile2.input) tilemap.SetTile(tilePosition, farmTile2.output);
     }
 }

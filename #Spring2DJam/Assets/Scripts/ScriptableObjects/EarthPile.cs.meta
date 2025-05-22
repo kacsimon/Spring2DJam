@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 12c592ad230e7544ebc04430da77530c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - EarthPile1Prefab: {fileID: 11400000, guid: 8b3e40e1d30d2d44bbde461b468ef8e4, type: 2}
+  - EarthPile2Prefab: {instanceID: 0}
+  - EarthPile3Prefab: {instanceID: 0}
+  - EarthPile4Prefab: {instanceID: 0}
+  - EarthPile5Prefab: {instanceID: 0}
+  - EarthPile6Prefab: {instanceID: 0}
+  - EarthPile7Prefab: {instanceID: 0}
+  - EarthPile8Prefab: {instanceID: 0}
+  - EarthPile9Prefab: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

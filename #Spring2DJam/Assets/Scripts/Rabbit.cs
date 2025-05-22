@@ -9,6 +9,7 @@ public class Rabbit : MonoBehaviour
     public event EventHandler<bool> OnSpriteFlip;
 
     [SerializeField] float velocity = 3f;
+    [SerializeField] TileBase ruinedTilePrefab;
     public enum State
     {
         Casual,
@@ -18,7 +19,7 @@ public class Rabbit : MonoBehaviour
     }
     State state = State.Casual;
     Vector3Int targetCarrot = new Vector3Int(6, 1);
-    bool isHungry = true, isFoundOG, isDragging/*, isFindField = false*/;
+    bool isHungry = true, isFoundOG, isDragging, isFindField = false;
     float eatDelay = 1.5f;
     int eatedWither = 0, maxEatedWither = 3;
 
@@ -41,8 +42,10 @@ public class Rabbit : MonoBehaviour
                 //if (!isFindField) CheckForField(currentPosition);
                 //else
                 //{
-                //    //TODO: ruin your field
                 //    Debug.Log("Ruin field at " + currentPosition);
+                //    //Ruin your field
+                //    GameManager.Instance.interactableTilemap.SetTile(currentPosition, ruinedTilePrefab);
+                //    isFindField = false;
                 //    state = State.Fed;
                 //    //Move();
                 //}
@@ -69,32 +72,40 @@ public class Rabbit : MonoBehaviour
                 break;
         }
     }
-    //void CheckForField(Vector3Int currentPosition)
-    //{
-    //    for (int x = currentPosition.x - 1; x <= currentPosition.x + 1; x++)
-    //    {
-    //        for (int y = currentPosition.y - 1; y <= currentPosition.y + 1; y++)
-    //        {
-    //            //Neighbour positions and current (all 9)
-    //            Vector3Int checkPos = new Vector3Int(x, y, 0);
-    //            TileData data = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.farmTilemap, checkPos);
-    //            if (data == null || !data.canPlant)
-    //            {
-    //                transform.position = Vector3.MoveTowards(transform.position, Vector3.left, velocity * Time.deltaTime);
-    //                isFindField = false;
-    //                Debug.Log("Can't find field");
-    //            }
-    //            else
-    //            {
-    //                Vector3 targetPosition = GameManager.Instance.farmTilemap.GetCellCenterWorld(checkPos);
-    //                transform.position = Vector3.MoveTowards(transform.position, targetPosition, velocity * Time.deltaTime);
-    //                Debug.Log("Field in " + checkPos + " position");
-    //                isFindField = true;
-    //                return;
-    //            }
-    //        }
-    //    }
-    //}
+    void CheckForField(Vector3Int currentPosition)
+    {
+        for (int x = currentPosition.x - 1; x <= currentPosition.x + 1; x++)
+        {
+            for (int y = currentPosition.y - 1; y <= currentPosition.y + 1; y++)
+            {
+                //Neighbour positions and current (all 9)
+                Vector3Int checkPos = new Vector3Int(x, y, 0);
+                TileData interactableData = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.interactableTilemap, checkPos);
+                if (interactableData != null) return;
+                TileData data = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.farmTilemap, checkPos);
+                if (data == null || !data.canPlant)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, Vector3.left, velocity * Time.deltaTime);
+                    isFindField = false;
+                    Debug.Log("Can't find field");
+                }
+                else
+                {
+                    Vector3 targetPosition = GameManager.Instance.farmTilemap.GetCellCenterWorld(checkPos);
+                    if (Vector3.Distance(transform.position, targetPosition) > .1f)
+                    {
+                        transform.position = Vector3.MoveTowards(transform.position, targetPosition, velocity * Time.deltaTime);
+                    }
+                    Debug.Log("Field in " + checkPos + " position");
+                    if (Vector3.Distance(transform.position, targetPosition) < .3f)
+                    {
+                        isFindField = true;
+                        return;
+                    }
+                }
+            }
+        }
+    }
     void CheckForWithering(Vector3Int currentPosition)
     {
         if (isDragging) return;
@@ -126,12 +137,10 @@ public class Rabbit : MonoBehaviour
                         GameManager.Instance.witheringPositionList.Remove(checkPos);
                         GameManager.Instance.vegetationTilemap.SetTile(checkPos, null);
                         eatDelay = 1.5f;
-
                         // Set farm tile infected
-                        TileBase farmTile = GameManager.Instance.farmTilemap.GetTile(checkPos);
                         if (UnityEngine.Random.Range(0, 100) >= 50) //50% chance
                         {
-                            GameManager.Instance.farmTilemap.SetTile(checkPos, MapManager.Instance.GetChangedFarmTile(farmTile));
+                            MapManager.Instance.ChangeFarmTile(GameManager.Instance.farmTilemap, checkPos);
                         }
                         //Became fed
                         if (eatedWither >= maxEatedWither)
@@ -193,6 +202,7 @@ public class Rabbit : MonoBehaviour
             int randomIndex = UnityEngine.Random.Range(0, GameManager.Instance.ogCarrotPositionList.Count);
             targetCarrot = GameManager.Instance.ogCarrotPositionList[randomIndex];
             isFoundOG = true;
+            state = State.Casual;
         }
         else if (GameManager.Instance.carrotPositionList.Count != 0)
         {
@@ -200,6 +210,7 @@ public class Rabbit : MonoBehaviour
             int randomIndex = UnityEngine.Random.Range(0, GameManager.Instance.carrotPositionList.Count);
             targetCarrot = GameManager.Instance.carrotPositionList[randomIndex];
             isFoundOG = false;
+            state = State.Casual;
         }
         else
         {

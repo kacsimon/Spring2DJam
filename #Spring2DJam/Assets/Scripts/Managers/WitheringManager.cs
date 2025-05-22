@@ -59,6 +59,7 @@ public class WitheringManager : MonoBehaviour
         }
         void TryToSpread(Vector3Int tilePosition)
         {
+            if (GameManager.Instance.interactableTilemap.GetTile(tilePosition) != null) return;
             if (previewPositionList.Contains(tilePosition)) return;
             if (GameManager.Instance.witheringPositionList.Contains(tilePosition)) return;
             TileData tileData = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.farmTilemap, tilePosition);

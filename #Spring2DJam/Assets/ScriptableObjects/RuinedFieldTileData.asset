@@ -13,14 +13,32 @@ MonoBehaviour:
   m_Name: RuinedFieldTileData
   m_EditorClassIdentifier: 
   tileArray:
-  - {fileID: 11400000, guid: 8b3e40e1d30d2d44bbde461b468ef8e4, type: 2}
-  - {fileID: 11400000, guid: 7c3fc719aac2cb6409f3fd1b12c2a828, type: 2}
-  - {fileID: 11400000, guid: a6f63c5ddd397b74686d608bb294a121, type: 2}
-  canWither: 1
+  - {fileID: 11400000, guid: 27dd1f2ecc8300f40b00ca2526c26841, type: 2}
+  - {fileID: 11400000, guid: d4d5cb9d3d58b594781a3a7985881951, type: 2}
+  - {fileID: 11400000, guid: e7e59fcbc6c04dd4996f6ab7bf8f2983, type: 2}
+  - {fileID: 11400000, guid: 99bf1327a36a16947a6c7bc9a24890f9, type: 2}
+  - {fileID: 11400000, guid: c57fb19983cb1e84eb28c650271c47fd, type: 2}
+  - {fileID: 11400000, guid: 7194a4fb73adf334586b9be4e4f7fcff, type: 2}
+  - {fileID: 11400000, guid: bc867e9cac626a34cb16be7522e600b6, type: 2}
+  - {fileID: 11400000, guid: 2f898de1601593d499bfc045f18d5f30, type: 2}
+  - {fileID: 11400000, guid: 247963b1aba4ae54c9166bb8453076ab, type: 2}
+  - {fileID: 11400000, guid: 7b00693ebba38d542ac6bfaed6c541f1, type: 2}
+  - {fileID: 11400000, guid: da96124f7b091ce45bc1a5e402a222a8, type: 2}
+  - {fileID: 11400000, guid: 615fa7682e626924882f7e4f687a8282, type: 2}
+  - {fileID: 11400000, guid: ad6b289628178bd43a027c141ec5ba84, type: 2}
+  - {fileID: 11400000, guid: 7133d88798db205488b4c731440154f7, type: 2}
+  - {fileID: 11400000, guid: 8c644e66a9fd02f4496dc9b9828b356c, type: 2}
+  - {fileID: 11400000, guid: d310c8beee6d04b49934d7c9fbb29e01, type: 2}
+  - {fileID: 11400000, guid: 263500afe96fb004a9d43cdd0885f058, type: 2}
+  - {fileID: 11400000, guid: 1911719edf82bdc44b57fec5294fdb65, type: 2}
+  - {fileID: 11400000, guid: 1ac997996d9d80847bc86bb1f22ff7c3, type: 2}
+  - {fileID: 11400000, guid: 5ca14de479d6fdc4db2bb91d1be117b6, type: 2}
+  canWither: 0
   canPlant: 0
   isInfected: 0
   isRuined: 1
-  spreadDelay: 20
-  spreadChance: 15
-  spreadInterval: 4
-  witheringTime: 6
+  spreadDelay: 0
+  spreadChance: 0
+  spreadInterval: 0
+  witheringTime: 0
+  clickCount: 0

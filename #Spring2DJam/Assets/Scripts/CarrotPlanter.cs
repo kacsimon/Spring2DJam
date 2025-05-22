@@ -14,15 +14,17 @@ public class CarrotPlanter : MonoBehaviour
             Vector3Int gridPosition = GameManager.Instance.vegetationTilemap.WorldToCell(mousePosition);
             if (GameManager.Instance.witheringPositionList.Contains(gridPosition)) return;
             //Check that can plant
-            TileData data = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.farmTilemap, gridPosition);
-            if (data == null || !data.canPlant) return;
+            TileData farmData = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.farmTilemap, gridPosition);
+            if (farmData == null || !farmData.canPlant) return;
             //Check if it already has something on it
             TileData VegetationData = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.vegetationTilemap, gridPosition);
             if (VegetationData != null) return;
+            TileData interactableData = MapManager.Instance.GetTileDataFromMap(GameManager.Instance.interactableTilemap, gridPosition);
+            if (interactableData != null) return;
             //Plant the carrot
             CarrotGrower plantedCarrot = Instantiate(carrotGrower, gridPosition, Quaternion.identity);
             //Set infected if the field infected
-            plantedCarrot.SetCarrotInfected(data.isInfected);
+            plantedCarrot.SetCarrotInfected(farmData.isInfected);
         }
     }
 }
